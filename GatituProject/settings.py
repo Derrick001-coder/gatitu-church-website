@@ -44,20 +44,21 @@ ALLOWED_HOSTS = [
 
 CSRF_TRUSTED_ORIGINS = [
     'https://gatitu-pcea-youth25.up.railway.app',
-    'https://*.gatitu-pcea-youth25.up.railway.app',
     'https://*.railway.app',
-    'http://gatitu-pcea-youth25.up.railway.app',
-    'http://*.railway.app',
+    
 ]
 
 # Cookie settings
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SAMESITE = 'None'
-SESSION_COOKIE_SAMESITE = 'None'
-CSRF_USE_SESSIONS = False
-CSRF_COOKIE_HTTPONLY = False
-CSRF_COOKIE_DOMAIN = '.railway.app'
+CSRF_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SAMESITE = 'Lax'
+#CSRF_USE_SESSIONS = False
+#CSRF_COOKIE_HTTPONLY = False
+#CSRF_COOKIE_DOMAIN = '.railway.app'
+# Important for cookie domains
+CSRF_COOKIE_DOMAIN = None
+SESSION_COOKIE_DOMAIN = None
 
 # Ensure CSRF looks at both HTTP_ORIGIN and HTTP_REFERER
 CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'
