@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="main-content">
+    <div class="container">
+        <section class="activities" id="activities">
+            <h2 class="section-title">Church Activities</h2>
+            <div class="activities-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                {% for activity in activities %}
+                <div class="activity-card {{ activity.activity_type }}" style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <div class="activity-header" style="padding: 15px 20px; color: white; font-weight: 600; display: flex; justify-content: space-between; align-items: center;">
+                        <span>{{ activity.get_activity_type_display }}</span>
+                        <span style="font-size: 0.8rem; opacity: 0.9;">{{ activity.date }}</span>
+                    </div>
+                    <div class="activity-body" style="padding: 20px;">
+                        <h3 class="activity-title" style="color: var(--primary); margin-bottom: 10px; font-size: 1.2rem;">
+                            {{ activity.title }}
+                        </h3>
+                        <p style="color: #6c757d; line-height: 1.5; margin-bottom: 15px;">
+                            {{ activity.description }}
+                        </p>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding-top: 15px; border-top: 1px solid #f8f9fa;">
+                            <small style="color: #6c757d; font-size: 0.8rem;">
+                                <i class="fas fa-calendar"></i> {{ activity.date }}
+                            </small>
+                            <span style="padding: 4px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 500; 
+                                        {% if activity.activity_type == 'ongoing' %}background: #e7f3ff; color: #0066cc;
+                                        {% elif activity.activity_type == 'upcoming' %}background: #fff3cd; color: #856404;
+                                        {% else %}background: #d4edda; color: #155724;{% endif %}">
+                                {{ activity.get_activity_type_display }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #6c757d;">
+                    <i class="fas fa-calendar-alt" style="font-size: 3rem; margin-bottom: 15px; display: block; color: #dee2e6;"></i>
+                    <h4>No activities scheduled</h4>
+                    <p>Check back later for updates</p>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+</main>
+
+<style>
+    .activity-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .ongoing .activity-header {
+        background: linear-gradient(135deg, var(--info), #17a2b8);
+    }
+    
+    .upcoming .activity-header {
+        background: linear-gradient(135deg, var(--warning), #ffc107);
+    }
+    
+    .completed .activity-header {
+        background: linear-gradient(135deg, var(--success), #28a745);
+    }
+</style>
+{% endblock %}

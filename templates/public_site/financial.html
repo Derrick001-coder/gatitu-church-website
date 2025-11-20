@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="main-content">
+    <div class="container">
+        <section class="financial-section">
+            <h2 class="section-title">Financial Updates</h2>
+            
+            {% if user.is_authenticated %}
+                <div class="financial-stats">
+                    {% for record in financial_records %}
+                    <div class="stat-card">
+                        <div class="stat-value">KSh {{ record.offering }}</div>
+                        <div class="stat-label">Total Offering</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">KSh {{ record.donations }}</div>
+                        <div class="stat-label">Total Donations</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">KSh {{ record.expenses }}</div>
+                        <div class="stat-label">Expenses</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">KSh {{ record.available_funds }}</div>
+                        <div class="stat-label">Available Funds</div>
+                    </div>
+                    {% empty %}
+                    <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #6c757d;">
+                        <i class="fas fa-chart-line" style="font-size: 3rem; margin-bottom: 15px; display: block; color: #dee2e6;"></i>
+                        <h4>No financial records yet</h4>
+                        <p>Check back later for updates</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <p>These funds will be used for our upcoming mission trip and community outreach programs. Thank you for your generous contributions!</p>
+            {% else %}
+                <div class="login-required">
+                    <h3>Login Required</h3>
+                    <p>Please log in to view financial updates</p>
+                    <a href="{% url 'login' %}" class="btn btn-primary">Login Now</a>
+                </div>
+            {% endif %}
+        </section>
+    </div>
+</main>
+{% endblock %}

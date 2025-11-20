@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="main-content">
+    <div class="container">
+        <section class="community-chat" id="community">
+            <h2 class="section-title">Community Chat</h2>
+            <div class="chat-messages" id="chatMessages">
+                {% if user.is_authenticated %}
+                    {% for message in messages %}
+                    <div class="message {% if message.user == user %}sent{% else %}received{% endif %}">
+                        <strong>{{ message.user.get_full_name }}:</strong> {{ message.message }} <small style="display: block; font-size: 0.7rem; color: #6c757d;">{{ message.timestamp|date:"H:i" }}</small>
+                    </div>
+                    {% empty %}
+                    <div class="message received">
+                        <strong>System:</strong> Welcome to PCEA Gatitu Church community chat! Start a conversation with fellow members.
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="message received">
+                        <strong>System:</strong> Please log in to view and participate in community chat.
+                    </div>
+                {% endif %}
+            </div>
+            {% if user.is_authenticated %}
+            <div class="chat-input" id="chatInputArea">
+                <form method="post" action="{% url 'send_message' %}" id="chatForm">
+                    {% csrf_token %}
+                    <input type="text" id="chatInput" name="message" placeholder="Type your message...">
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </form>
+            </div>
+            {% else %}
+            <div id="chatLoginRequired" class="login-required">
+                <h3>Login Required</h3>
+                <p>Please log in to participate in community chat</p>
+                <a href="{% url 'login' %}" class="btn btn-primary">Login Now</a>
+            </div>
+            {% endif %}
+        </section>
+    </div>
+</main>
+
+{% if user.is_authenticated %}
+<script>
+    // Auto refresh chat messages (simplified version)
+    setInterval(function() {
+        // In a real application, you would use AJAX to fetch new messages
+        // For now, we'll just reload the page every 10 seconds
+        // This is a placeholder for actual AJAX implementation
+        // window.location.reload();
+    }, 10000);
+</script>
+{% endif %}
+{% endblock %}

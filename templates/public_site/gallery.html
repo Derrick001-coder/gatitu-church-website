@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="main-content">
+    <div class="container">
+        <section class="gallery-section" id="gallery">
+            <h2 class="section-title">Church Gallery</h2>
+            
+            <h3 style="margin: 20px 0 10px; color: var(--primary);">Church Photos</h3>
+            <div class="gallery-container">
+                {% for photo in church_photos %}
+                <div class="gallery-item">
+                    <img src="{{ photo.image.url }}" alt="{{ photo.title }}" loading="lazy">
+                </div>
+                {% empty %}
+                <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #6c757d;">
+                    <i class="fas fa-images" style="font-size: 3rem; margin-bottom: 15px; display: block; color: #dee2e6;"></i>
+                    <h4>No church photos yet</h4>
+                    <p>Check back later for updates</p>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <h3 style="margin: 20px 0 10px; color: var(--primary);">Trips & Retreats</h3>
+            <div class="gallery-container">
+                {% for photo in trip_photos %}
+                <div class="gallery-item">
+                    <img src="{{ photo.image.url }}" alt="{{ photo.title }}" loading="lazy">
+                </div>
+                {% empty %}
+                <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #6c757d;">
+                    <i class="fas fa-images" style="font-size: 3rem; margin-bottom: 15px; display: block; color: #dee2e6;"></i>
+                    <h4>No trip photos yet</h4>
+                    <p>Check back later for updates</p>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+</main>
+{% endblock %}

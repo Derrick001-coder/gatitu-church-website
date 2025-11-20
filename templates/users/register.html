@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="modal" id="registerModal" style="display: block; position: relative; background: transparent; box-shadow: none;">
+    <div class="modal-content" style="margin: 30px auto;">
+        <div class="modal-header">
+            <h2 class="modal-title">Create an Account</h2>
+        </div>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        
+        <form method="post" id="registerForm">
+            {% csrf_token %}
+            
+            <!-- First Name Field -->
+            <div class="form-group">
+                <label for="id_first_name">First Name</label>
+                {{ form.first_name }}
+                {% if form.first_name.errors %}
+                    <div class="errorlist">{{ form.first_name.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <!-- Last Name Field -->
+            <div class="form-group">
+                <label for="id_last_name">Last Name</label>
+                {{ form.last_name }}
+                {% if form.last_name.errors %}
+                    <div class="errorlist">{{ form.last_name.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <!-- Email Field -->
+            <div class="form-group">
+                <label for="id_email">Email Address</label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                    <div class="errorlist">{{ form.email.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <!-- Phone Field -->
+            <div class="form-group">
+                <label for="id_phone">Phone Number</label>
+                {{ form.phone }}
+                {% if form.phone.errors %}
+                    <div class="errorlist">{{ form.phone.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <!-- Password Fields -->
+            <div class="form-group">
+                <label for="id_password1">Password</label>
+                {{ form.password1 }}
+                {% if form.password1.errors %}
+                    <div class="errorlist">{{ form.password1.errors }}</div>
+                {% endif %}
+                {% if form.password1.help_text %}
+                    <small class="form-text text-muted">{{ form.password1.help_text }}</small>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_password2">Confirm Password</label>
+                {{ form.password2 }}
+                {% if form.password2.errors %}
+                    <div class="errorlist">{{ form.password2.errors }}</div>
+                {% endif %}
+                {% if form.password2.help_text %}
+                    <small class="form-text text-muted">{{ form.password2.help_text }}</small>
+                {% endif %}
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Register</button>
+        </form>
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <p>Already have an account? <a href="{% url 'login' %}" style="color: var(--primary);">Login here</a></p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #e9ecef;
+        border-radius: 4px;
+        font-size: 1rem;
+        margin-bottom: 5px;
+    }
+    
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.1);
+    }
+    
+    .errorlist {
+        color: #dc3545;
+        font-size: 0.9rem;
+        margin-top: 5px;
+        list-style: none;
+        padding: 0;
+    }
+    
+    .form-text {
+        font-size: 0.8rem;
+        color: #6c757d;
+        margin-top: 5px;
+    }
+    
+    .text-muted {
+        color: #6c757d !important;
+    }
+</style>
+{% endblock %}

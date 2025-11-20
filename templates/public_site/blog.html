@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="main-content">
+    <div class="container">
+        <section class="blog-section" id="blog">
+            <h2 class="section-title">Church Blog</h2>
+            
+            {% if user.is_authenticated %}
+                <div id="blogPosts">
+                    {% for post in posts %}
+                    <div class="blog-post">
+                        <h3 class="blog-title">{{ post.title }}</h3>
+                        <div class="blog-meta">
+                            <span class="blog-author">By {{ post.author.get_full_name }}</span>
+                            <span class="blog-date">{{ post.date }}</span>
+                        </div>
+                        <div class="blog-content">
+                            <p>{{ post.content }}</p>
+                        </div>
+                        <div class="comments-section">
+                            <h4>Comments ({{ post.comments.count }})</h4>
+                            {% for comment in post.comments.all %}
+                            <div class="comment">
+                                <div class="comment-header">
+                                    <span class="comment-author">{{ comment.author.get_full_name }}</span>
+                                    <span class="comment-date">{{ comment.date }}</span>
+                                </div>
+                                <p>{{ comment.content }}</p>
+                            </div>
+                            {% endfor %}
+                            <div class="comment-form">
+                                <h4>Add a Comment</h4>
+                                <form method="post" action="{% url 'add_comment' post.id %}">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <textarea class="form-control comment-text" name="content" placeholder="Write your comment..." rows="3" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Post Comment</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="empty-state" style="text-align: center; padding: 40px; color: #6c757d;">
+                        <i class="fas fa-blog" style="font-size: 3rem; margin-bottom: 15px; display: block; color: #dee2e6;"></i>
+                        <h4>No blog posts yet</h4>
+                        <p>Check back later for updates</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div id="blogLoginRequired" class="login-required">
+                    <h3>Login Required</h3>
+                    <p>Please log in to view blog posts and comments</p>
+                    <a href="{% url 'login' %}" class="btn btn-primary">Login Now</a>
+                </div>
+            {% endif %}
+        </section>
+    </div>
+</main>
+{% endblock %}

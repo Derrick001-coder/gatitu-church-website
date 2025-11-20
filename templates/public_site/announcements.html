@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="main-content">
+    <div class="container">
+        <section class="announcements" id="announcements">
+            <h2 class="section-title">Latest Announcements</h2>
+            <div class="announcement-list">
+                {% for announcement in announcements %}
+                <div class="announcement-item">
+                    <h3 class="announcement-title">{{ announcement.title }}</h3>
+                    <div class="announcement-date">Posted on: {{ announcement.date }} by {{ announcement.author.get_full_name }}</div>
+                    <p>{{ announcement.content }}</p>
+                </div>
+                {% empty %}
+                <div class="empty-state" style="text-align: center; padding: 40px; color: #6c757d;">
+                    <i class="fas fa-bullhorn" style="font-size: 3rem; margin-bottom: 15px; display: block; color: #dee2e6;"></i>
+                    <h4>No announcements yet</h4>
+                    <p>Check back later for updates</p>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+</main>
+{% endblock %}
