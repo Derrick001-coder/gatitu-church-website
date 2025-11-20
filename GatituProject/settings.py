@@ -183,3 +183,24 @@ if DEBUG:
 # Password reset settings
 #mmvz slaz pbzw yhwd
 PASSWORD_RESET_TIMEOUT = 86400
+# Automatic superuser creation for Railway
+if 'DJANGO_SUPERUSER_USERNAME' in os.environ:
+    from django.core.management import execute_from_command_line
+    import sys
+    
+    # Create superuser automatically
+    superuser_username = os.environ.get('DJANGO_SUPERUSER_USERNAME')
+    superuser_email = os.environ.get('DJANGO_SUPERUSER_EMAIL')
+    superuser_password = os.environ.get('DJANGO_SUPERUSER_PASSWORD')
+    
+    # Check if superuser doesn't already exist
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
+    
+    if not User.objects.filter(username=superuser_username).exists():
+        User.objects.create_superuser(
+            username=superuser_username,
+            email=superuser_email,
+            password=superuser_password
+        )
+        print(f"Superuser {superuser_username} created successfully!")
