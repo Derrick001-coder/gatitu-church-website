@@ -31,7 +31,7 @@ DEBUG = True
 DEBUG = True  # Keep as True for now to see errors
 
 # Security settings
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = False
 
 # CSRF Comprehensive Fix
 ALLOWED_HOSTS = [
