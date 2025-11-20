@@ -29,8 +29,12 @@ DEBUG = False
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = 'None'
+CSRF_USE_SESSIONS = False
+CSRF_COOKIE_HTTPONLY = False
 
-ALLOWED_HOSTS = ['.railway.app', 'https://gatitu-pcea-youth25.up.railway.app' ]
+ALLOWED_HOSTS = ['.railway.app', 'gatitu-pcea-youth25.up.railway.app']
 
 CSRF_TRUSTED_ORIGINS = ['https://*.railway.app', 'https://gatitu-pcea-youth25.up.railway.app']
 # Application definition
