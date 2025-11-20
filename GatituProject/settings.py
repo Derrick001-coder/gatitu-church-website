@@ -26,18 +26,41 @@ SECRET_KEY = 'django-insecure-%0h+m(1%yx_8o$re=&z7h73lqc%7fihzhvdpj(j(g(yv@7_=sc
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True  # Keep as True for now to see errors
+
+# Security settings
 SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
+
+# CSRF Comprehensive Fix
+ALLOWED_HOSTS = [
+    'gatitu-pcea-youth25.up.railway.app',
+    '.gatitu-pcea-youth25.up.railway.app',
+    '.railway.app',
+    'localhost',
+    '127.0.0.1'
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://gatitu-pcea-youth25.up.railway.app',
+    'https://*.gatitu-pcea-youth25.up.railway.app',
+    'https://*.railway.app',
+    'http://gatitu-pcea-youth25.up.railway.app',
+    'http://*.railway.app',
+]
+
+# Cookie settings
 CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SAMESITE = 'None'
 CSRF_USE_SESSIONS = False
 CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_DOMAIN = '.railway.app'
 
-ALLOWED_HOSTS = ['.railway.app', 'gatitu-pcea-youth25.up.railway.app']
-
-CSRF_TRUSTED_ORIGINS = ['https://*.railway.app', 'https://gatitu-pcea-youth25.up.railway.app']
-# Application definition
+# Ensure CSRF looks at both HTTP_ORIGIN and HTTP_REFERER
+CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
