@@ -225,12 +225,8 @@ if 'DJANGO_SUPERUSER_USERNAME' in os.environ:
     
     # Check if superuser doesn't already exist
     from django.contrib.auth import get_user_model
-    User = get_user_model()
-    
-    if not User.objects.filter(username=superuser_username).exists():
-        User.objects.create_superuser(
-            username=superuser_username,
-            email=superuser_email,
-            password=superuser_password
-        )
-        print(f"Superuser {superuser_username} created successfully!")
+   # Automatic superuser creation (safe version)
+
+if all(os.environ.get(var) for var in ['DJANGO_SUPERUSER_USERNAME', 'DJANGO_SUPERUSER_EMAIL', 'DJANGO_SUPERUSER_PASSWORD']):
+    # This will be handled by Railway's post-deploy hook
+    pass
