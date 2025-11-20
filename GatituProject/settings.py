@@ -26,10 +26,13 @@ SECRET_KEY = 'django-insecure-%0h+m(1%yx_8o$re=&z7h73lqc%7fihzhvdpj(j(g(yv@7_=sc
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['.railway.app', 'https://gatitu-pcea-youth25.up.railway.app' ]
 
-
+CSRF_TRUSTED_ORIGINS = ['https://*.railway.app', 'https://gatitu-pcea-youth25.up.railway.app']
 # Application definition
 
 INSTALLED_APPS = [
