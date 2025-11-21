@@ -759,6 +759,50 @@
         .notification-dropdown {
             padding: 10px;
         }
+
+        /* Mobile-specific notification fixes */
+@media (max-width: 768px) {
+    .notification-dropdown {
+        position: fixed !important;
+        top: 60px !important;
+        right: 10px !important;
+        left: 10px !important;
+        width: auto !important;
+        max-width: none !important;
+        transform: none !important;
+    }
+    
+    .notification-bell {
+        margin-right: 10px !important;
+    }
+    
+    .user-profile {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px !important;
+        padding: 10px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .notification-dropdown {
+        right: 5px !important;
+        left: 5px !important;
+        width: calc(100vw - 10px) !important;
+    }
+    
+    .notification-item {
+        padding: 10px 12px !important;
+    }
+    
+    .notification-title {
+        font-size: 0.9rem !important;
+    }
+    
+    .notification-message {
+        font-size: 0.85rem !important;
+    }
+}
     </style>
         
        
@@ -794,6 +838,7 @@
                             <!-- Notification Bell -->
                             <!-- In the header section where you have the notification bell -->
                             <!-- Replace the entire notification bell section with this: -->
+                           <!-- Notification Bell - FIXED FOR MOBILE -->
 <div class="notification-bell" id="notificationBell" style="position: relative; cursor: pointer;">
     <i class="fas fa-bell" style="color: white; font-size: 1.2rem;"></i>
     <span class="notification-count" id="notificationCount" 
@@ -805,9 +850,9 @@
         {% endwith %}
     </span>
     
-    <!-- Notification Dropdown -->
+    <!-- Notification Dropdown - FIXED FOR MOBILE -->
     <div class="notification-dropdown" id="notificationDropdown" 
-         style="display: none; position: absolute; top: 100%; right: 0; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 350px; max-height: 400px; overflow-y: auto; z-index: 1000;">
+         style="display: none; position: absolute; top: 100%; right: 0; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 350px; max-width: 90vw; max-height: 400px; overflow-y: auto; z-index: 1000;">
         <div style="padding: 15px; border-bottom: 1px solid #e9ecef; display: flex; justify-content: space-between; align-items: center;">
             <h4 style="margin: 0; color: var(--primary);">Notifications</h4>
             {% if user.notification_set.unread.count > 0 %}
@@ -854,7 +899,7 @@
         </div>
         {% endif %}
     </div>
-</div>
+</div> 
                             
                             <!-- User Avatar -->
                             <div class="user-avatar" onclick="window.location.href='{% url 'profile' %}'" 

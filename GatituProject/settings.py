@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%0h+m(1%yx_8o$re=&z7h73lqc%7fihzhvdpj(j(g(yv@7_=sc'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True  # Keep as True for now to see errors
@@ -184,29 +184,23 @@ AUTHENTICATION_BACKENDS = [
 ]
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_NAME = 'sessionid'
-# Email configuration
-# For development
-# For production, use:
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'your-email@gmail.com'
-# EMAIL_HOST_PASSWORD = 'your-app-password'
 # Email Configuration
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'derrickbaragu@gmail.com'
-EMAIL_HOST_PASSWORD = 'mmvz slaz pbzw yhwd'  # You'll need to create an App Password
-DEFAULT_FROM_EMAIL = 'derrickbaragu@gmail.com'
-SERVER_EMAIL = 'derrickbaragu@gmail.com'
-
-# If you want to test in development without sending real emails:
 if DEBUG:
-    # Option 1: Show emails in console (recommended for testing)
+    # Development: Show emails in console
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    # Production: Use real email
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+    EMAIL_HOST_USER = 'derrickbaragu@gmail.com'
+    EMAIL_HOST_PASSWORD = 'mmvz slaz pbzw yhwd'  # Your App Password
+    DEFAULT_FROM_EMAIL = 'derrickbaragu@gmail.com'
+    SERVER_EMAIL = 'derrickbaragu@gmail.com'
+
+# Password reset settings
+PASSWORD_RESET_TIMEOUT = 86400  # 24 hours
     
     # Option 2: Use a test file instead of console
     # EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
@@ -263,3 +257,18 @@ def create_superuser_if_needed():
 
 # Run the function
 create_superuser_if_needed()
+
+# Database configuration
+if all(os.environ.get(var) for var in ['DJANGO_SUPERUSER_USERNAME', 'DJANGO_SUPERUSER_EMAIL', 'DJANGO_SUPERUSER_PASSWORD']):
+    # This will be handled by Railway's post-deploy hook
+    # Remove the complex function that's causing errors
+    pass
+
+# Site URL for password reset links
+if DEBUG:
+    SITE_URL = 'http://localhost:8000'
+else:
+    SITE_URL = 'https://gatitu-pcea-youth25.up.railway.app'
+
+# For password reset emails to include correct links
+PASSWORD_RESET_TIMEOUT_DAYS = 1
