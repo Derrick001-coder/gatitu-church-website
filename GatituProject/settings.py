@@ -272,3 +272,29 @@ else:
 
 # For password reset emails to include correct links
 PASSWORD_RESET_TIMEOUT_DAYS = 1
+
+# Check if superuser environment variables exist
+if all(os.environ.get(var) for var in ['DJANGO_SUPERUSER_USERNAME', 'DJANGO_SUPERUSER_EMAIL', 'DJANGO_SUPERUSER_PASSWORD']):
+    try:
+        # Import after Django is ready
+        from django.apps import apps
+        if apps.ready:
+            from django.contrib.auth import get_user_model
+            User = get_user_model()
+            
+            username = os.environ['DJANGO_SUPERUSER_USERNAME']
+            email = os.environ['DJANGO_SUPERUSER_EMAIL']
+            password = os.environ['DJANGO_SUPERUSER_PASSWORD']
+            
+            # Create superuser if it doesn't exist
+            if not User.objects.filter(username=username).exists():
+                User.objects.create_superuser(
+                    username=username,
+                    email=email,
+                    password=password
+                )
+                print(f"✅ Superuser '{username}' created successfully!")
+            else:
+                print(f"ℹ️ Superuser '{username}' already exists")
+    except Exception as e:
+        print(f"⚠️ Could not create superuser automatically: {e}")
