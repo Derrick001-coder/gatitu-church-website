@@ -40,15 +40,15 @@
         }
         
         /* Header Styles */
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 1rem 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+       header {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        padding: 0.7rem 0; /* Reduced from 1rem */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
         
         .header-content {
             display: flex;
@@ -65,11 +65,11 @@
         }
         
         .logo h1 {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
         }
         
         .logo-icon {
-            font-size: 2rem;
+            font-size: 1.7rem;
         }
         
         /* Desktop Navigation */
@@ -80,7 +80,7 @@
         .desktop-nav ul {
             display: flex;
             list-style: none;
-            gap: 20px;
+            gap: 15px;
         }
         
         .desktop-nav a {
@@ -90,6 +90,7 @@
             transition: all 0.3s ease;
             padding: 5px 10px;
             border-radius: 4px;
+            font-size: 0.95rem;
         }
         
         .desktop-nav a:hover {
@@ -136,9 +137,10 @@
             display: block;
             color: white;
             text-decoration: none;
-            padding: 15px 20px;
+            padding: 12px 20px;
             font-weight: 500;
             transition: all 0.3s ease;
+            font-size: 0.9rem;
         }
         
         .mobile-nav a:hover {
@@ -625,8 +627,8 @@
         }
         
         .user-avatar {
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
             background-color: var(--primary);
             color: white;
@@ -636,6 +638,7 @@
             font-weight: bold;
             background-size: cover;
             background-position: center;
+            font-size: 0.9rem;
         }
 
         /* Admin Access */
@@ -666,7 +669,7 @@
         }
         
         .notification-bell i {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: white;
         }
         
@@ -677,9 +680,9 @@
             background-color: var(--accent);
             color: white;
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            font-size: 0.8rem;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -870,8 +873,20 @@
             }
 
             .logo h1 {
-                font-size: 1.2rem;
+                font-size: 1.1rem;
             }
+                .logo-icon {
+            font-size: 1.5rem; /* Even smaller on very small screens */
+            }
+            
+            .user-profile {
+                gap: 8px !important; /* Reduced from 10px */
+            }
+            
+            .auth-buttons {
+                gap: 6px; /* Further reduced */
+            }
+            
         }
     </style>
 </head>
