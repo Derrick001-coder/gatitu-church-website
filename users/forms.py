@@ -228,10 +228,34 @@ class CustomPasswordResetForm(PasswordResetForm):
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        if not CustomUser.objects.filter(email=email).exists():
-            raise forms.ValidationError("No account found with this email address.")
+        if not CustomUser.objects.filter(email=email, is_active=True).exists():
+            raise forms.ValidationError("No active account found with this email address.")
         return email
-
+    
+    def save(self, domain_override=None,
+             subject_template_name='users/password_reset_subject.txt',
+             email_template_name='users/password_reset_email.html',
+             use_https=False, token_generator=None,
+             from_email=None, request=None, html_email_template_name=None,
+             extra_email_context=None):
+        """
+        Override save method to ensure our custom templates are used
+        """
+        if not domain_override:
+            from django.conf import settings
+            domain_override = settings.SITE_URL.replace('https://', '').replace('http://', '')
+            
+        super().save(
+            domain_override=domain_override,
+            subject_template_name=subject_template_name,
+            email_template_name=email_template_name,
+            use_https=not settings.DEBUG,
+            token_generator=token_generator,
+            from_email=from_email,
+            request=request,
+            html_email_template_name=html_email_template_name,
+            extra_email_context=extra_email_context
+        )
 
 class CustomSetPasswordForm(SetPasswordForm):
     new_password1 = forms.CharField(

@@ -185,27 +185,29 @@ AUTHENTICATION_BACKENDS = [
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_NAME = 'sessionid'
 # Email Configuration
+# Email Configuration - FIXED VERSION
 if DEBUG:
     # Development: Show emails in console
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
-    # Production: Use real email
+    # Production: Use real email with better configuration
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     EMAIL_HOST = 'smtp.gmail.com'
     EMAIL_PORT = 587
     EMAIL_USE_TLS = True
     EMAIL_HOST_USER = 'derrickbaragu@gmail.com'
     EMAIL_HOST_PASSWORD = 'mmvz slaz pbzw yhwd'  # Your App Password
-    DEFAULT_FROM_EMAIL = 'derrickbaragu@gmail.com'
+    DEFAULT_FROM_EMAIL = 'PCEA Gatitu Church <derrickbaragu@gmail.com>'
     SERVER_EMAIL = 'derrickbaragu@gmail.com'
 
 # Password reset settings
-PASSWORD_RESET_TIMEOUT = 86400  # 24 hours
-    
-    # Option 2: Use a test file instead of console
-    # EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-    # EMAIL_FILE_PATH = BASE_DIR / 'sent_emails'
-# Password reset settings
+PASSWORD_RESET_TIMEOUT = 86400  # 24 hours in seconds
+
+# Site URL for password reset links
+if DEBUG:
+    SITE_URL = 'http://localhost:8000'
+else:
+    SITE_URL = 'https://gatitu-pcea-youth25.up.railway.app'
 #mmvz slaz pbzw yhwd
 PASSWORD_RESET_TIMEOUT = 86400
 # Automatic superuser creation for Railway
