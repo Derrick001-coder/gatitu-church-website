@@ -3,10 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PCEA Gatitu Church - Growing in Faith, Serving in Love</title>
+    <title>PCEA Gatitu Church - {% block title %}Growing in Faith, Serving in Love{% endblock %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* === BASIC RESET & VARIABLES === */
+        /* === ESSENTIAL STYLES ONLY === */
+        :root {
+            --primary: #4a6fa5;
+            --secondary: #6b8cbc;
+            --accent: #ff6b6b;
+            --light: #f8f9fa;
+            --dark: #343a40;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -14,21 +22,13 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        :root {
-            --primary: #4a6fa5;
-            --secondary: #6b8cbc;
-            --accent: #ff6b6b;
-            --light: #f8f9fa;
-            --dark: #343a40;
-            --success: #28a745;
-            --warning: #ffc107;
-            --info: #17a2b8;
-        }
-
         body {
             background-color: #f5f7fa;
             color: var(--dark);
             line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         .container {
@@ -38,40 +38,32 @@
             padding: 0 15px;
         }
 
-        /* === HEADER STYLES === */
+        /* === HEADER - SIMPLIFIED === */
         header {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             padding: 1rem 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: relative;
         }
 
         .logo {
             display: flex;
             align-items: center;
             gap: 10px;
-            z-index: 1001;
         }
 
         .logo h1 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
+            font-weight: 600;
         }
 
-        .logo-icon {
-            font-size: 2rem;
-        }
-
-        /* === DESKTOP NAVIGATION (UNCHANGED) === */
+        /* === DESKTOP NAVIGATION === */
         .desktop-nav ul {
             display: flex;
             list-style: none;
@@ -81,20 +73,20 @@
         .desktop-nav a {
             color: white;
             text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            padding: 5px 10px;
+            padding: 8px 12px;
             border-radius: 4px;
+            transition: background-color 0.3s;
         }
 
         .desktop-nav a:hover {
-            background-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255,255,255,0.1);
         }
 
-        /* === AUTH SECTION - DESKTOP (UNCHANGED) === */
-        #authSection {
+        /* === AUTH SECTION === */
+        .auth-section {
             display: flex;
             align-items: center;
+            gap: 15px;
         }
 
         .auth-buttons {
@@ -102,81 +94,43 @@
             gap: 10px;
         }
 
-        .btn-login, .btn-register {
+        .btn {
             padding: 8px 20px;
             border-radius: 20px;
             text-decoration: none;
-            transition: all 0.3s ease;
             font-weight: 500;
+            transition: all 0.3s;
         }
 
         .btn-login {
             background: transparent;
-            border: 1px solid white;
+            border: 2px solid white;
             color: white;
         }
 
         .btn-register {
             background: var(--accent);
-            border: 1px solid var(--accent);
+            border: 2px solid var(--accent);
             color: white;
         }
 
-        /* === USER PROFILE - DESKTOP (UNCHANGED) === */
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* === USER PROFILE === */
         .user-profile {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             background: rgba(255,255,255,0.15);
-            padding: 8px 15px;
+            padding: 8px 16px;
             border-radius: 25px;
-            backdrop-filter: blur(10px);
-        }
-
-        .notification-bell {
-            position: relative;
-            cursor: pointer;
-            margin-right: 15px;
-        }
-
-        .notification-bell i {
-            font-size: 1.2rem;
-            color: white;
-        }
-
-        .notification-count {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: var(--accent);
-            color: white;
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            font-size: 0.7rem;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        .notification-dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            width: 350px;
-            max-height: 400px;
-            overflow-y: auto;
-            display: none;
-            z-index: 1000;
         }
 
         .user-avatar {
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: white;
             color: var(--primary);
@@ -184,16 +138,12 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            cursor: pointer;
-            font-size: 1rem;
-            border: 2px solid white;
+            font-size: 0.9rem;
         }
 
-        .user-avatar img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
         }
 
         .btn-logout {
@@ -201,28 +151,39 @@
             border: 1px solid white;
             color: white;
             padding: 6px 12px;
-            border-radius: 20px;
+            border-radius: 15px;
             text-decoration: none;
             font-size: 0.8rem;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 5px;
         }
 
-        /* === MOBILE NAVIGATION TOGGLE === */
+        /* === MOBILE NAVIGATION === */
         .mobile-nav-toggle {
             display: none;
             background: none;
             border: none;
             color: white;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             cursor: pointer;
-            padding: 5px;
-            z-index: 1002;
         }
 
-        /* === MOBILE SIDEBAR NAVIGATION === */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            z-index: 1000;
+            transform: translateX(-100%);
+            transition: transform 0.3s;
+        }
+
+        .mobile-nav.active {
+            transform: translateX(0);
+            display: block;
+        }
+
         .mobile-nav-overlay {
             display: none;
             position: fixed;
@@ -230,255 +191,118 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0,0,0,0.5);
             z-index: 999;
-            backdrop-filter: blur(2px);
         }
 
         .mobile-nav-overlay.active {
             display: block;
         }
 
-        .mobile-nav {
-            position: fixed;
-            top: 0;
-            left: -280px;
-            width: 280px;
-            height: 100vh;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-            transition: left 0.3s ease-in-out;
-            overflow-y: auto;
-        }
-
-        .mobile-nav.active {
-            left: 0;
-        }
-
-        .mobile-nav-header {
-            padding: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .mobile-nav-close {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        .mobile-nav ul {
-            list-style: none;
-            padding: 1rem 0;
-        }
-
-        .mobile-nav li {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .mobile-nav a {
-            display: block;
-            color: white;
-            text-decoration: none;
-            padding: 15px 25px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-        }
-
-        .mobile-nav a:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            padding-left: 30px;
-        }
-
-        /* === MOBILE AUTH IN SIDEBAR === */
-        .mobile-auth-section {
-            padding: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-            margin-top: 10px;
-        }
-
-        .mobile-user-profile {
-            text-align: center;
-            color: white;
-            padding: 15px;
-        }
-
-        .mobile-user-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: white;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin: 0 auto 10px;
-            font-size: 1.2rem;
-        }
-
-        .mobile-auth-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .mobile-auth-buttons a {
-            text-align: center;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            margin: 5px 0;
-        }
-
-        /* === RESPONSIVE DESIGN === */
-        @media (max-width: 768px) {
-            /* Hide desktop nav on mobile */
-            .desktop-nav {
-                display: none;
-            }
-
-            /* Show mobile toggle */
-            .mobile-nav-toggle {
-                display: block;
-            }
-
-            /* Hide desktop auth section on mobile */
-            #authSection {
-                display: none;
-            }
-
-            /* Adjust header for mobile */
-            .header-content {
-                gap: 15px;
-            }
-
-            .logo h1 {
-                font-size: 1.3rem;
-            }
-
-            .logo-icon {
-                font-size: 1.7rem;
-            }
-
-            /* Mobile notification dropdown fixes */
-            .notification-dropdown {
-                position: fixed;
-                top: 70px;
-                right: 10px;
-                left: 10px;
-                width: auto;
-                max-width: none;
-            }
-        }
-
-        @media (min-width: 769px) {
-            /* Hide mobile elements on desktop */
-            .mobile-nav-toggle,
-            .mobile-nav-overlay,
-            .mobile-nav {
-                display: none !important;
-            }
-        }
-
-        /* === REST OF YOUR EXISTING STYLES === */
-        .cover-section {
-            position: relative;
-            height: 80vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-
-        .cover-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('cover.jpg') no-repeat center center/cover;
-        }
-
-        .welcome-message {
-            position: relative;
-            z-index: 2;
-            color: white;
-            text-align: center;
-            font-size: 3rem;
-            font-weight: 700;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
-            animation: fadeIn 2s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+        /* === MAIN CONTENT AREA === */
         .main-content {
-            padding: 40px 0;
+            flex: 1;
+            padding: 2rem 0;
         }
 
+        /* === FOOTER === */
         footer {
-            background-color: var(--dark);
+            background: var(--dark);
             color: white;
-            padding: 40px 0 20px;
+            padding: 2rem 0 1rem;
+            margin-top: auto;
         }
 
         .footer-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-bottom: 30px;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: #adb5bd;
+            text-decoration: none;
+        }
+
+        .footer-section a:hover {
+            color: white;
         }
 
         .copyright {
             text-align: center;
-            padding-top: 20px;
+            padding-top: 1rem;
             border-top: 1px solid #495057;
-            color: #adb5bd;
-            font-size: 0.9rem;
-        }
-
-        /* Notification items styling */
-        .notification-item {
-            padding: 12px 15px;
-            border-bottom: 1px solid #f8f9fa;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .notification-item:hover {
-            background-color: #f8f9fa;
-        }
-
-        .notification-title {
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .notification-message {
-            font-size: 0.9rem;
-            color: #495057;
-            margin-bottom: 5px;
-            line-height: 1.4;
-        }
-
-        .notification-time {
-            font-size: 0.8rem;
             color: #6c757d;
         }
+
+        /* === RESPONSIVE DESIGN === */
+        @media (max-width: 768px) {
+            .desktop-nav {
+                display: none;
+            }
+            
+            .auth-section {
+                display: none;
+            }
+            
+            .mobile-nav-toggle {
+                display: block;
+            }
+            
+            .logo h1 {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-nav,
+            .mobile-nav-overlay {
+                display: none !important;
+            }
+        }
+
+        /* === UTILITY CLASSES FOR CHILD TEMPLATES === */
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+        }
     </style>
+    
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
     <!-- Header -->
@@ -491,7 +315,7 @@
                 </div>
 
                 <!-- Desktop Navigation -->
-                <nav class="desktop-nav"> 
+                <nav class="desktop-nav">
                     <ul>
                         <li><a href="{% url 'home' %}">Home</a></li>
                         <li><a href="{% url 'announcements' %}">Announcements</a></li>
@@ -502,78 +326,31 @@
                     </ul>
                 </nav>
 
-                <!-- Desktop Auth Section -->
-                <div id="authSection">
+                <!-- Auth Section -->
+                <div class="auth-section">
                     {% if user.is_authenticated %}
-                        <!-- User is LOGGED IN - DESKTOP -->
                         <div class="user-profile">
-                            <div class="notification-bell" id="notificationBell">
-                                <i class="fas fa-bell"></i>
-                                <span class="notification-count" id="notificationCount">
-                                    {% with unread_count=user.notification_set.unread.count %}
-                                        {% if unread_count > 0 %}{{ unread_count }}{% endif %}
-                                    {% endwith %}
-                                </span>
-                                <div class="notification-dropdown" id="notificationDropdown">
-                                    <div style="padding: 15px; border-bottom: 1px solid #e9ecef; display: flex; justify-content: space-between; align-items: center;">
-                                        <h4 style="margin: 0; color: var(--primary);">Notifications</h4>
-                                        {% if user.notification_set.unread.count > 0 %}
-                                        <button onclick="markAllNotificationsRead()" style="background: none; border: none; color: var(--primary); cursor: pointer; font-size: 0.8rem;">
-                                            Mark all as read
-                                        </button>
-                                        {% endif %}
-                                    </div>
-                                    <div id="notificationList">
-                                        {% for notification in user.notification_set.unread|slice:":10" %}
-                                        <div class="notification-item" data-notification-id="{{ notification.id }}" onclick="markNotificationRead({{ notification.id }})">
-                                            <div class="notification-title">
-                                                {% if notification.notification_type == 'announcement' %}📢
-                                                {% elif notification.notification_type == 'activity' %}📅
-                                                {% elif notification.notification_type == 'blog' %}📝
-                                                {% elif notification.notification_type == 'financial' %}💰
-                                                {% else %}🔔{% endif %}
-                                                {{ notification.title }}
-                                            </div>
-                                            <div class="notification-message">{{ notification.message }}</div>
-                                            <div class="notification-time">{{ notification.created_at|timesince }} ago</div>
-                                        </div>
-                                        {% empty %}
-                                        <div style="padding: 30px; text-align: center; color: #6c757d;">
-                                            <i class="fas fa-bell-slash" style="font-size: 2rem; margin-bottom: 10px; display: block; color: #dee2e6;"></i>
-                                            <p style="margin: 0;">No new notifications</p>
-                                            <small>Notifications will appear here when there's new activity.</small>
-                                        </div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="user-avatar" onclick="window.location.href='{% url 'profile' %}'">
+                            <div class="user-avatar">
                                 {% if user.avatar %}
-                                    <img src="{{ user.avatar.url }}" alt="{{ user.get_full_name }}">
+                                    <img src="{{ user.avatar.url }}" alt="Profile" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
                                 {% else %}
-                                    {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
+                                    {{ user.first_name|first|upper }}
                                 {% endif %}
                             </div>
-                            
-                            <span style="color: white; font-weight: 600; font-size: 0.95rem;">
-                                {{ user.first_name }} {{ user.last_name }}
-                            </span>
-                            
+                            <span class="user-name">{{ user.first_name }}</span>
                             <a href="{% url 'logout' %}" class="btn-logout">
-                                <i class="fas fa-sign-out-alt"></i> Logout
+                                <i class="fas fa-sign-out-alt"></i>
                             </a>
                         </div>
                     {% else %}
-                        <!-- User is NOT LOGGED IN - DESKTOP -->
                         <div class="auth-buttons">
-                            <a href="{% url 'login' %}" class="btn-login">Login</a>
-                            <a href="{% url 'register' %}" class="btn-register">Register</a>
+                            <a href="{% url 'login' %}" class="btn btn-login">Login</a>
+                            <a href="{% url 'register' %}" class="btn btn-register">Register</a>
                         </div>
                     {% endif %}
                 </div>
 
-                <!-- Mobile Navigation Toggle -->
+                <!-- Mobile Toggle -->
                 <button class="mobile-nav-toggle" id="mobileNavToggle">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -581,61 +358,46 @@
         </div>
     </header>
 
-    <!-- Mobile Sidebar Navigation -->
+    <!-- Mobile Navigation -->
     <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
     <nav class="mobile-nav" id="mobileNav">
-        <div class="mobile-nav-header">
-            <div class="logo">
+        <div style="padding: 2rem;">
+            <div class="logo" style="margin-bottom: 2rem;">
                 <div class="logo-icon">⛪</div>
                 <h1>PCEA Gatitu</h1>
+                <button style="background:none;border:none;color:white;font-size:1.2rem;margin-left:auto;" onclick="closeMobileNav()">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-            <button class="mobile-nav-close" id="mobileNavClose">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        
-        <ul>
-            <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="{% url 'announcements' %}">Announcements</a></li>
-            <li><a href="{% url 'activities' %}">Activities</a></li>
-            <li><a href="{% url 'gallery' %}">Gallery</a></li>
-            <li><a href="{% url 'blog' %}">Blog</a></li>
-            <li><a href="{% url 'community_chat' %}">Community</a></li>
-        </ul>
+            
+            <ul style="list-style:none; margin-bottom: 2rem;">
+                <li style="margin-bottom: 0.5rem;"><a href="{% url 'home' %}" style="color:white;text-decoration:none;display:block;padding:1rem;background:rgba(255,255,255,0.1);border-radius:5px;">Home</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="{% url 'announcements' %}" style="color:white;text-decoration:none;display:block;padding:1rem;background:rgba(255,255,255,0.1);border-radius:5px;">Announcements</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="{% url 'activities' %}" style="color:white;text-decoration:none;display:block;padding:1rem;background:rgba(255,255,255,0.1);border-radius:5px;">Activities</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="{% url 'gallery' %}" style="color:white;text-decoration:none;display:block;padding:1rem;background:rgba(255,255,255,0.1);border-radius:5px;">Gallery</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="{% url 'blog' %}" style="color:white;text-decoration:none;display:block;padding:1rem;background:rgba(255,255,255,0.1);border-radius:5px;">Blog</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="{% url 'community_chat' %}" style="color:white;text-decoration:none;display:block;padding:1rem;background:rgba(255,255,255,0.1);border-radius:5px;">Community</a></li>
+            </ul>
 
-        <!-- Mobile Auth Section in Sidebar -->
-        <div class="mobile-auth-section">
-            {% if user.is_authenticated %}
-                <!-- User is LOGGED IN - MOBILE -->
-                <div class="mobile-user-profile">
-                    <div class="mobile-user-avatar">
-                        {% if user.avatar %}
-                            <img src="{{ user.avatar.url }}" alt="{{ user.get_full_name }}">
-                        {% else %}
-                            {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
-                        {% endif %}
-                    </div>
-                    <h4>{{ user.first_name }} {{ user.last_name }}</h4>
-                    <p style="font-size: 0.9rem; opacity: 0.8; margin: 5px 0 15px 0;">Welcome back!</p>
-                </div>
-                <div class="mobile-auth-buttons">
-                    <a href="{% url 'profile' %}">My Profile</a>
-                    <a href="{% url 'logout' %}">Logout</a>
-                </div>
-            {% else %}
-                <!-- User is NOT LOGGED IN - MOBILE -->
-                <div class="mobile-auth-buttons">
-                    <a href="{% url 'login' %}">Login</a>
-                    <a href="{% url 'register' %}">Register</a>
-                </div>
-            {% endif %}
+            <div style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 1rem;">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}" style="color:white;text-decoration:none;display:block;padding:1rem;background:rgba(255,255,255,0.1);border-radius:5px;margin-bottom:0.5rem;">My Profile</a>
+                    <a href="{% url 'logout' %}" style="color:white;text-decoration:none;display:block;padding:1rem;background:rgba(255,255,255,0.1);border-radius:5px;">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}" style="color:white;text-decoration:none;display:block;padding:1rem;background:rgba(255,255,255,0.1);border-radius:5px;margin-bottom:0.5rem;">Login</a>
+                    <a href="{% url 'register' %}" style="color:white;text-decoration:none;display:block;padding:1rem;background:rgba(255,255,255,0.1);border-radius:5px;">Register</a>
+                {% endif %}
+            </div>
         </div>
     </nav>
 
     <!-- Main Content -->
     <main class="main-content">
-        {% block content %}
-        {% endblock %}
+        <div class="container">
+            {% block content %}
+            <!-- Child template content goes here -->
+            {% endblock %}
+        </div>
     </main>
 
     <!-- Footer -->
@@ -644,7 +406,7 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <h3>About Us</h3>
-                    <p>The PCEA Gatitu Church is a vibrant community of Christians dedicated to growing in faith and serving our community.</p>
+                    <p>Growing in Faith, Serving in Love</p>
                 </div>
                 <div class="footer-section">
                     <h3>Quick Links</h3>
@@ -655,164 +417,44 @@
                         <li><a href="{% url 'gallery' %}">Gallery</a></li>
                         <li><a href="{% url 'blog' %}">Blog</a></li>
                         <li><a href="{% url 'community_chat' %}">Community</a></li>
-                        {% if user.is_staff %}
-                            <li><a href="/admin/">Admin Panel</a></li>
-                        {% endif %}
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h3>Contact Us</h3>
+                    <h3>Contact</h3>
                     <ul>
-                        <li>Email: info@pceagatitu.org</li>
-                        <li>Phone: +254 000 000 000</li>
-                        <li>Address: PCEA Gatitu Church, Nyeri</li>
+                        <li>Email: info@gatitu.org</li>
+                        <li>Phone: +254 XXX XXX XXX</li>
+                        <li>Location: Nyeri, Kenya</li>
                     </ul>
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2025 Skywave solutions. All rights reserved.</p>
+                <p>&copy; 2025 PCEA Gatitu Church. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script>
         // Mobile Navigation
-        document.addEventListener('DOMContentLoaded', function() {
-            const mobileNavToggle = document.getElementById('mobileNavToggle');
-            const mobileNav = document.getElementById('mobileNav');
-            const mobileNavOverlay = document.getElementById('mobileNavOverlay');
-            const mobileNavClose = document.getElementById('mobileNavClose');
+        function openMobileNav() {
+            document.getElementById('mobileNav').classList.add('active');
+            document.getElementById('mobileNavOverlay').classList.add('active');
+        }
 
-            function openMobileNav() {
-                mobileNav.classList.add('active');
-                mobileNavOverlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
+        function closeMobileNav() {
+            document.getElementById('mobileNav').classList.remove('active');
+            document.getElementById('mobileNavOverlay').classList.remove('active');
+        }
 
-            function closeMobileNav() {
-                mobileNav.classList.remove('active');
-                mobileNavOverlay.classList.remove('active');
-                document.body.style.overflow = '';
-            }
+        document.getElementById('mobileNavToggle').addEventListener('click', openMobileNav);
+        document.getElementById('mobileNavOverlay').addEventListener('click', closeMobileNav);
 
-            mobileNavToggle.addEventListener('click', openMobileNav);
-            mobileNavClose.addEventListener('click', closeMobileNav);
-            mobileNavOverlay.addEventListener('click', closeMobileNav);
-
-            // Close mobile nav when clicking on a link
-            const mobileNavLinks = mobileNav.querySelectorAll('a');
-            mobileNavLinks.forEach(link => {
-                link.addEventListener('click', closeMobileNav);
-            });
-
-            // Close on escape key
-            document.addEventListener('keydown', function(event) {
-                if (event.key === 'Escape') {
-                    closeMobileNav();
-                }
-            });
-
-            // Notification functionality
-            updateNotificationCount();
-            
-            document.getElementById('notificationBell').addEventListener('click', function(e) {
-                e.stopPropagation();
-                const dropdown = document.getElementById('notificationDropdown');
-                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-            });
-
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function() {
-                document.getElementById('notificationDropdown').style.display = 'none';
-            });
+        // Close mobile nav when link is clicked
+        document.querySelectorAll('.mobile-nav a').forEach(link => {
+            link.addEventListener('click', closeMobileNav);
         });
-
-        // Your existing notification functions
-        function markNotificationRead(notificationId) {
-            fetch(`/notifications/mark-read/${notificationId}/`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': getCookie('csrftoken'),
-                    'Content-Type': 'application/json',
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const notificationElement = document.querySelector(`[data-notification-id="${notificationId}"]`);
-                    if (notificationElement) {
-                        notificationElement.remove();
-                    }
-                    updateNotificationCount();
-                    
-                    const notificationList = document.getElementById('notificationList');
-                    if (notificationList.children.length === 0) {
-                        notificationList.innerHTML = `
-                            <div style="padding: 30px; text-align: center; color: #6c757d;">
-                                <i class="fas fa-bell-slash" style="font-size: 2rem; margin-bottom: 10px; display: block; color: #dee2e6;"></i>
-                                <p style="margin: 0;">No new notifications</p>
-                                <small>Notifications will appear here when there's new activity.</small>
-                            </div>
-                        `;
-                    }
-                }
-            });
-        }
-
-        function markAllNotificationsRead() {
-            fetch('/notifications/mark-all-read/', {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': getCookie('csrftoken'),
-                    'Content-Type': 'application/json',
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const notificationList = document.getElementById('notificationList');
-                    notificationList.innerHTML = `
-                        <div style="padding: 30px; text-align: center; color: #6c757d;">
-                            <i class="fas fa-bell-slash" style="font-size: 2rem; margin-bottom: 10px; display: block; color: #dee2e6;"></i>
-                            <p style="margin: 0;">No new notifications</p>
-                            <small>Notifications will appear here when there's new activity.</small>
-                        </div>
-                    `;
-                    updateNotificationCount();
-                }
-            });
-        }
-
-        function updateNotificationCount() {
-            fetch('/notifications/count/')
-            .then(response => response.json())
-            .then(data => {
-                const countElement = document.getElementById('notificationCount');
-                if (data.count > 0) {
-                    countElement.textContent = data.count;
-                    countElement.style.display = 'flex';
-                } else {
-                    countElement.style.display = 'none';
-                }
-            });
-        }
-
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-
-        setInterval(updateNotificationCount, 30000);
     </script>
+
+    {% block extra_js %}{% endblock %}
 </body>
 </html>
