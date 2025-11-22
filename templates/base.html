@@ -54,12 +54,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
         }
         
         .logo {
             display: flex;
             align-items: center;
             gap: 10px;
+            z-index: 1001;
         }
         
         .logo h1 {
@@ -70,13 +72,18 @@
             font-size: 2rem;
         }
         
-        nav ul {
+        /* Desktop Navigation */
+        .desktop-nav {
+            display: flex;
+        }
+        
+        .desktop-nav ul {
             display: flex;
             list-style: none;
             gap: 20px;
         }
         
-        nav a {
+        .desktop-nav a {
             color: white;
             text-decoration: none;
             font-weight: 500;
@@ -85,15 +92,64 @@
             border-radius: 4px;
         }
         
-        nav a:hover {
+        .desktop-nav a:hover {
             background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Mobile Navigation */
+        .mobile-nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+            z-index: 1001;
+        }
+        
+        .mobile-nav {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        
+        .mobile-nav.active {
+            display: block;
+        }
+        
+        .mobile-nav ul {
+            list-style: none;
+            padding: 1rem 0;
+        }
+        
+        .mobile-nav li {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .mobile-nav a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-nav a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding-left: 25px;
         }
         
         .auth-buttons {
             display: flex;
             gap: 10px;
         }
-        
         
         .btn {
             padding: 8px 16px;
@@ -719,13 +775,16 @@
         /* Responsive Design */
         @media (max-width: 768px) {
             .header-content {
-                flex-direction: column;
+                flex-direction: row;
                 gap: 15px;
             }
             
-            nav ul {
-                flex-wrap: wrap;
-                justify-content: center;
+            .desktop-nav {
+                display: none;
+            }
+            
+            .mobile-nav-toggle {
+                display: block;
             }
             
             .welcome-message {
@@ -748,6 +807,20 @@
                 width: 300px;
                 right: -50px;
             }
+
+            /* Mobile user profile adjustments */
+            .user-profile {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px !important;
+                padding: 10px !important;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-nav {
+                display: none !important;
+            }
         }
 
         .notification-item .notification-message {
@@ -761,53 +834,46 @@
         }
 
         /* Mobile-specific notification fixes */
-@media (max-width: 768px) {
-    .notification-dropdown {
-        position: fixed !important;
-        top: 60px !important;
-        right: 10px !important;
-        left: 10px !important;
-        width: auto !important;
-        max-width: none !important;
-        transform: none !important;
-    }
-    
-    .notification-bell {
-        margin-right: 10px !important;
-    }
-    
-    .user-profile {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px !important;
-        padding: 10px !important;
-    }
-}
+        @media (max-width: 768px) {
+            .notification-dropdown {
+                position: fixed !important;
+                top: 60px !important;
+                right: 10px !important;
+                left: 10px !important;
+                width: auto !important;
+                max-width: none !important;
+                transform: none !important;
+            }
+            
+            .notification-bell {
+                margin-right: 10px !important;
+            }
+        }
 
-@media (max-width: 480px) {
-    .notification-dropdown {
-        right: 5px !important;
-        left: 5px !important;
-        width: calc(100vw - 10px) !important;
-    }
-    
-    .notification-item {
-        padding: 10px 12px !important;
-    }
-    
-    .notification-title {
-        font-size: 0.9rem !important;
-    }
-    
-    .notification-message {
-        font-size: 0.85rem !important;
-    }
-}
+        @media (max-width: 480px) {
+            .notification-dropdown {
+                right: 5px !important;
+                left: 5px !important;
+                width: calc(100vw - 10px) !important;
+            }
+            
+            .notification-item {
+                padding: 10px 12px !important;
+            }
+            
+            .notification-title {
+                font-size: 0.9rem !important;
+            }
+            
+            .notification-message {
+                font-size: 0.85rem !important;
+            }
+
+            .logo h1 {
+                font-size: 1.2rem;
+            }
+        }
     </style>
-        
-       
-        
-    
 </head>
 <body>
     <!-- Header -->
@@ -818,7 +884,26 @@
                     <div class="logo-icon">⛪</div>
                     <h1>PCEA Gatitu Church</h1>
                 </div>
-                <nav> 
+
+                <!-- Desktop Navigation -->
+                <nav class="desktop-nav"> 
+                    <ul>
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'announcements' %}">Announcements</a></li>
+                        <li><a href="{% url 'activities' %}">Activities</a></li>
+                        <li><a href="{% url 'gallery' %}">Gallery</a></li>
+                        <li><a href="{% url 'blog' %}">Blog</a></li>
+                        <li><a href="{% url 'community_chat' %}">Community</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Mobile Navigation Toggle -->
+                <button class="mobile-nav-toggle" id="mobileNavToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <!-- Mobile Navigation -->
+                <nav class="mobile-nav" id="mobileNav">
                     <ul>
                         <li><a href="{% url 'home' %}">Home</a></li>
                         <li><a href="{% url 'announcements' %}">Announcements</a></li>
@@ -829,77 +914,73 @@
                     </ul>
                 </nav>
                 
-                <!-- AUTHENTICATION DISPLAY - DEBUG VERSION -->
-                                <!-- AUTHENTICATION DISPLAY - CLEAN VERSION -->
+                <!-- AUTHENTICATION DISPLAY -->
                 <div id="authSection">
                     {% if user.is_authenticated %}
                         <!-- User is LOGGED IN -->
                         <div class="user-profile" style="display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.15); padding: 8px 15px; border-radius: 25px; backdrop-filter: blur(10px);">
                             <!-- Notification Bell -->
-                            <!-- In the header section where you have the notification bell -->
-                            <!-- Replace the entire notification bell section with this: -->
-                           <!-- Notification Bell - FIXED FOR MOBILE -->
-<div class="notification-bell" id="notificationBell" style="position: relative; cursor: pointer;">
-    <i class="fas fa-bell" style="color: white; font-size: 1.2rem;"></i>
-    <span class="notification-count" id="notificationCount" 
-          style="position: absolute; top: -5px; right: -5px; background: var(--accent); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 0.7rem; display: none; align-items: center; justify-content: center; font-weight: bold;">
-        {% with unread_count=user.notification_set.unread.count %}
-            {% if unread_count > 0 %}
-                {{ unread_count }}
-            {% endif %}
-        {% endwith %}
-    </span>
-    
-    <!-- Notification Dropdown - FIXED FOR MOBILE -->
-    <div class="notification-dropdown" id="notificationDropdown" 
-         style="display: none; position: absolute; top: 100%; right: 0; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 350px; max-width: 90vw; max-height: 400px; overflow-y: auto; z-index: 1000;">
-        <div style="padding: 15px; border-bottom: 1px solid #e9ecef; display: flex; justify-content: space-between; align-items: center;">
-            <h4 style="margin: 0; color: var(--primary);">Notifications</h4>
-            {% if user.notification_set.unread.count > 0 %}
-            <button onclick="markAllNotificationsRead()" style="background: none; border: none; color: var(--primary); cursor: pointer; font-size: 0.8rem;">
-                Mark all as read
-            </button>
-            {% endif %}
-        </div>
-        <div id="notificationList">
-            {% for notification in user.notification_set.unread|slice:":10" %}
-            <div class="notification-item" data-notification-id="{{ notification.id }}"
-                 style="padding: 12px 15px; border-bottom: 1px solid #f8f9fa; cursor: pointer; transition: background-color 0.2s;"
-                 onmouseover="this.style.backgroundColor='#f8f9fa'" 
-                 onmouseout="this.style.backgroundColor='white'"
-                 onclick="markNotificationRead({{ notification.id }})">
-                <div class="notification-title" style="font-weight: 600; color: var(--primary); margin-bottom: 5px; display: flex; align-items: center; gap: 8px;">
-                    {% if notification.notification_type == 'announcement' %}📢
-                    {% elif notification.notification_type == 'activity' %}📅
-                    {% elif notification.notification_type == 'blog' %}📝
-                    {% elif notification.notification_type == 'financial' %}💰
-                    {% else %}🔔{% endif %}
-                    {{ notification.title }}
-                </div>
-                <div class="notification-message" style="font-size: 0.9rem; color: #495057; margin-bottom: 5px; line-height: 1.4;">
-                    {{ notification.message }}
-                </div>
-                <div class="notification-time" style="font-size: 0.8rem; color: #6c757d;">
-                    {{ notification.created_at|timesince }} ago
-                </div>
-            </div>
-            {% empty %}
-            <div style="padding: 30px; text-align: center; color: #6c757d;">
-                <i class="fas fa-bell-slash" style="font-size: 2rem; margin-bottom: 10px; display: block; color: #dee2e6;"></i>
-                <p style="margin: 0;">No new notifications</p>
-                <small>Notifications will appear here when there's new activity.</small>
-            </div>
-            {% endfor %}
-        </div>
-        {% if user.notification_set.unread.count > 10 %}
-        <div style="padding: 10px 15px; text-align: center; border-top: 1px solid #e9ecef;">
-            <a href="#" style="color: var(--primary); font-size: 0.9rem; text-decoration: none;">
-                View all {{ user.notification_set.unread.count }} notifications
-            </a>
-        </div>
-        {% endif %}
-    </div>
-</div> 
+                            <div class="notification-bell" id="notificationBell" style="position: relative; cursor: pointer;">
+                                <i class="fas fa-bell" style="color: white; font-size: 1.2rem;"></i>
+                                <span class="notification-count" id="notificationCount" 
+                                      style="position: absolute; top: -5px; right: -5px; background: var(--accent); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 0.7rem; display: none; align-items: center; justify-content: center; font-weight: bold;">
+                                    {% with unread_count=user.notification_set.unread.count %}
+                                        {% if unread_count > 0 %}
+                                            {{ unread_count }}
+                                        {% endif %}
+                                    {% endwith %}
+                                </span>
+                                
+                                <!-- Notification Dropdown - FIXED FOR MOBILE -->
+                                <div class="notification-dropdown" id="notificationDropdown" 
+                                     style="display: none; position: absolute; top: 100%; right: 0; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 350px; max-width: 90vw; max-height: 400px; overflow-y: auto; z-index: 1000;">
+                                    <div style="padding: 15px; border-bottom: 1px solid #e9ecef; display: flex; justify-content: space-between; align-items: center;">
+                                        <h4 style="margin: 0; color: var(--primary);">Notifications</h4>
+                                        {% if user.notification_set.unread.count > 0 %}
+                                        <button onclick="markAllNotificationsRead()" style="background: none; border: none; color: var(--primary); cursor: pointer; font-size: 0.8rem;">
+                                            Mark all as read
+                                        </button>
+                                        {% endif %}
+                                    </div>
+                                    <div id="notificationList">
+                                        {% for notification in user.notification_set.unread|slice:":10" %}
+                                        <div class="notification-item" data-notification-id="{{ notification.id }}"
+                                             style="padding: 12px 15px; border-bottom: 1px solid #f8f9fa; cursor: pointer; transition: background-color 0.2s;"
+                                             onmouseover="this.style.backgroundColor='#f8f9fa'" 
+                                             onmouseout="this.style.backgroundColor='white'"
+                                             onclick="markNotificationRead({{ notification.id }})">
+                                            <div class="notification-title" style="font-weight: 600; color: var(--primary); margin-bottom: 5px; display: flex; align-items: center; gap: 8px;">
+                                                {% if notification.notification_type == 'announcement' %}📢
+                                                {% elif notification.notification_type == 'activity' %}📅
+                                                {% elif notification.notification_type == 'blog' %}📝
+                                                {% elif notification.notification_type == 'financial' %}💰
+                                                {% else %}🔔{% endif %}
+                                                {{ notification.title }}
+                                            </div>
+                                            <div class="notification-message" style="font-size: 0.9rem; color: #495057; margin-bottom: 5px; line-height: 1.4;">
+                                                {{ notification.message }}
+                                            </div>
+                                            <div class="notification-time" style="font-size: 0.8rem; color: #6c757d;">
+                                                {{ notification.created_at|timesince }} ago
+                                            </div>
+                                        </div>
+                                        {% empty %}
+                                        <div style="padding: 30px; text-align: center; color: #6c757d;">
+                                            <i class="fas fa-bell-slash" style="font-size: 2rem; margin-bottom: 10px; display: block; color: #dee2e6;"></i>
+                                            <p style="margin: 0;">No new notifications</p>
+                                            <small>Notifications will appear here when there's new activity.</small>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    {% if user.notification_set.unread.count > 10 %}
+                                    <div style="padding: 10px 15px; text-align: center; border-top: 1px solid #e9ecef;">
+                                        <a href="#" style="color: var(--primary); font-size: 0.9rem; text-decoration: none;">
+                                            View all {{ user.notification_set.unread.count }} notifications
+                                        </a>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div> 
                             
                             <!-- User Avatar -->
                             <div class="user-avatar" onclick="window.location.href='{% url 'profile' %}'" 
@@ -936,7 +1017,6 @@
             </div>
         </div>
     </header>
-
 
     <!-- Main Content -->
     {% block content %}
@@ -979,118 +1059,157 @@
         </div>
     </footer>
 
-  <script>
-// Notification functionality
-document.addEventListener('DOMContentLoaded', function() {
-    updateNotificationCount();
-    
-    document.getElementById('notificationBell').addEventListener('click', function(e) {
-        e.stopPropagation();
-        const dropdown = document.getElementById('notificationDropdown');
-        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-    });
+    <script>
+        // Mobile Navigation Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileNavToggle = document.getElementById('mobileNavToggle');
+            const mobileNav = document.getElementById('mobileNav');
 
-    // Close dropdown when clicking outside
-    document.addEventListener('click', function() {
-        document.getElementById('notificationDropdown').style.display = 'none';
-    });
-});
+            mobileNavToggle.addEventListener('click', function() {
+                mobileNav.classList.toggle('active');
+                
+                // Change icon based on state
+                const icon = mobileNavToggle.querySelector('i');
+                if (mobileNav.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
 
-// Mark notification as read
-function markNotificationRead(notificationId) {
-    fetch(`/notifications/mark-read/${notificationId}/`, {
-        method: 'POST',
-        headers: {
-            'X-CSRFToken': getCookie('csrftoken'),
-            'Content-Type': 'application/json',
-        },
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Remove the notification from the list
-            const notificationElement = document.querySelector(`[data-notification-id="${notificationId}"]`);
-            if (notificationElement) {
-                notificationElement.remove();
-            }
-            // Update notification count
+            // Close mobile nav when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.mobile-nav') && !event.target.closest('.mobile-nav-toggle')) {
+                    mobileNav.classList.remove('active');
+                    const icon = mobileNavToggle.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+
+            // Close mobile nav when clicking on a link
+            const mobileNavLinks = mobileNav.querySelectorAll('a');
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileNav.classList.remove('active');
+                    const icon = mobileNavToggle.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                });
+            });
+
+            // Existing notification functionality
             updateNotificationCount();
             
-            // If no notifications left, show empty state
-            const notificationList = document.getElementById('notificationList');
-            if (notificationList.children.length === 0) {
-                notificationList.innerHTML = `
-                    <div style="padding: 30px; text-align: center; color: #6c757d;">
-                        <i class="fas fa-bell-slash" style="font-size: 2rem; margin-bottom: 10px; display: block; color: #dee2e6;"></i>
-                        <p style="margin: 0;">No new notifications</p>
-                        <small>Notifications will appear here when there's new activity.</small>
-                    </div>
-                `;
+            document.getElementById('notificationBell').addEventListener('click', function(e) {
+                e.stopPropagation();
+                const dropdown = document.getElementById('notificationDropdown');
+                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function() {
+                document.getElementById('notificationDropdown').style.display = 'none';
+            });
+        });
+
+        // Mark notification as read
+        function markNotificationRead(notificationId) {
+            fetch(`/notifications/mark-read/${notificationId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Remove the notification from the list
+                    const notificationElement = document.querySelector(`[data-notification-id="${notificationId}"]`);
+                    if (notificationElement) {
+                        notificationElement.remove();
+                    }
+                    // Update notification count
+                    updateNotificationCount();
+                    
+                    // If no notifications left, show empty state
+                    const notificationList = document.getElementById('notificationList');
+                    if (notificationList.children.length === 0) {
+                        notificationList.innerHTML = `
+                            <div style="padding: 30px; text-align: center; color: #6c757d;">
+                                <i class="fas fa-bell-slash" style="font-size: 2rem; margin-bottom: 10px; display: block; color: #dee2e6;"></i>
+                                <p style="margin: 0;">No new notifications</p>
+                                <small>Notifications will appear here when there's new activity.</small>
+                            </div>
+                        `;
+                    }
+                }
+            });
+        }
+
+        // Mark all notifications as read
+        function markAllNotificationsRead() {
+            fetch('/notifications/mark-all-read/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Clear all notifications from the list
+                    const notificationList = document.getElementById('notificationList');
+                    notificationList.innerHTML = `
+                        <div style="padding: 30px; text-align: center; color: #6c757d;">
+                            <i class="fas fa-bell-slash" style="font-size: 2rem; margin-bottom: 10px; display: block; color: #dee2e6;"></i>
+                            <p style="margin: 0;">No new notifications</p>
+                            <small>Notifications will appear here when there's new activity.</small>
+                        </div>
+                    `;
+                    // Update notification count
+                    updateNotificationCount();
+                }
+            });
+        }
+
+        // Update notification count
+        function updateNotificationCount() {
+            fetch('/notifications/count/')
+            .then(response => response.json())
+            .then(data => {
+                const countElement = document.getElementById('notificationCount');
+                if (data.count > 0) {
+                    countElement.textContent = data.count;
+                    countElement.style.display = 'flex';
+                } else {
+                    countElement.style.display = 'none';
+                }
+            });
+        }
+
+        // CSRF token helper
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
             }
+            return cookieValue;
         }
-    });
-}
 
-// Mark all notifications as read
-function markAllNotificationsRead() {
-    fetch('/notifications/mark-all-read/', {
-        method: 'POST',
-        headers: {
-            'X-CSRFToken': getCookie('csrftoken'),
-            'Content-Type': 'application/json',
-        },
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Clear all notifications from the list
-            const notificationList = document.getElementById('notificationList');
-            notificationList.innerHTML = `
-                <div style="padding: 30px; text-align: center; color: #6c757d;">
-                    <i class="fas fa-bell-slash" style="font-size: 2rem; margin-bottom: 10px; display: block; color: #dee2e6;"></i>
-                    <p style="margin: 0;">No new notifications</p>
-                    <small>Notifications will appear here when there's new activity.</small>
-                </div>
-            `;
-            // Update notification count
-            updateNotificationCount();
-        }
-    });
-}
-
-// Update notification count
-function updateNotificationCount() {
-    fetch('/notifications/count/')
-    .then(response => response.json())
-    .then(data => {
-        const countElement = document.getElementById('notificationCount');
-        if (data.count > 0) {
-            countElement.textContent = data.count;
-            countElement.style.display = 'flex';
-        } else {
-            countElement.style.display = 'none';
-        }
-    });
-}
-
-// CSRF token helper
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
-// Auto-refresh notifications every 30 seconds
-setInterval(updateNotificationCount, 30000);
-</script>
+        // Auto-refresh notifications every 30 seconds
+        setInterval(updateNotificationCount, 30000);
+    </script>
 </body>
 </html>
